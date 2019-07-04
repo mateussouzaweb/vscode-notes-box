@@ -1,0 +1,126 @@
+{
+	"name": "snippetsbox",
+	"displayName": "Snippets Box",
+	"description": "Manage your custom code snippets and notes on VSCode with no pain.",
+	"version": "0.0.1",
+	"publisher": "mateussouzaweb",
+	"repository": "https://github.com/mateus007/vscode-snippetsbox",
+	"enableProposedApi": true,
+	"engines": {
+		"vscode": "^1.36.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onView:snippetsExplorer"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "snippetsbox-explorer",
+					"title": "Snippets Box",
+					"icon": "media/logo.svg"
+				}
+			]
+		},
+		"views": {
+			"snippetsbox-explorer": [
+				{
+					"id": "snippetsExplorer",
+					"name": "Explorer"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "snippetsExplorer.refreshExplorer",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "snippetsExplorer.addFile",
+				"title": "Add File",
+				"icon": {
+					"light": "resources/light/file.svg",
+					"dark": "resources/dark/file.svg"
+				}
+			},
+			{
+				"command": "snippetsExplorer.addFolder",
+				"title": "Add Folder",
+				"icon": {
+					"light": "resources/light/folder.svg",
+					"dark": "resources/dark/folder.svg"
+				}
+			},
+			{
+				"command": "snippetsExplorer.deleteFile",
+				"title": "Delete File"
+			},
+			{
+				"command": "snippetsExplorer.deleteFolder",
+				"title": "Delete Folder"
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "snippetsExplorer.refreshExplorer",
+					"when": "view == snippetsExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "snippetsExplorer.addFile",
+					"when": "view == snippetsExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "snippetsExplorer.addFolder",
+					"when": "view == snippetsExplorer",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "snippetsExplorer.deleteFile",
+					"when": "view == snippetsExplorer && viewItem == file"
+				},
+				{
+					"command": "snippetsExplorer.deleteFolder",
+					"when": "view == snippetsExplorer && viewItem == folder"
+				}
+			]
+		},
+		"configuration": [
+			{
+				"title": "Snippets Box",
+				"properties": {
+					"snippetsbox.location": {
+						"type": "string",
+						"default": ""
+					}
+				}
+			}
+		]
+	},
+	"scripts": {
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^10.12.21",
+		"@types/vscode": "^1.36.0",
+		"eslint": "^5.13.0",
+		"glob": "^7.1.4",
+		"mocha": "^6.1.4",
+		"typescript": "^3.3.1",
+		"vscode-test": "^1.0.0-next.0"
+	}
+}
