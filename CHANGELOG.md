@@ -7,3 +7,8 @@ All notable changes to the "Snippets Box" extension for VSCode will be documente
 ## [0.0.1]
 
 - Initial release.
+
+## [0.0.2]
+
+- Added live reload folder snippets folder path
+- Delete support to files and folders

@@ -8,14 +8,38 @@ class SnippetsExplorerProvider {
 
 	/**
 	 * CONSTRUCTOR
-	 * @param {string} workspaceRoot
 	 */
-	constructor(workspaceRoot){
+	constructor(){
 
-		this.workspaceRoot = workspaceRoot;
 		this._onDidChangeTreeData = new vscode.EventEmitter();
 		this.onDidChangeTreeData = this._onDidChangeTreeData.event;
+		this.setWorkspaceRootPath();
 
+	}
+
+	/**
+	 * Set snippets path
+	 * @return {Boolean}
+	 */
+	setWorkspaceRootPath(){
+
+		this.workspaceRoot = vscode.workspace
+			.getConfiguration()
+			.get('snippetsbox.location');
+
+		if( !this.workspaceRoot ){
+
+			vscode.window.showInformationMessage(
+				'Snippets Box has not configured yet. Please configure Snippets Box path before.'
+			);
+			vscode.commands.executeCommand(
+				'workbench.action.openSettings', '@ext:mateussouzaweb.snippetsbox'
+			);
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -23,7 +47,11 @@ class SnippetsExplorerProvider {
 	 * @return {void}
 	 */
 	refresh(){
-		this._onDidChangeTreeData.fire();
+
+		if( this.setWorkspaceRootPath() ){
+			this._onDidChangeTreeData.fire();
+		}
+
 	}
 
 	/**
@@ -68,7 +96,6 @@ class SnippetsExplorerProvider {
 	getChildren(element){
 
 		if( !this.workspaceRoot ){
-			vscode.window.showInformationMessage('Snippets Box has not configured yet. Please configure Snippets Box folder before and restart your editor');
 			return Promise.resolve([]);
 		}
 
@@ -131,6 +158,64 @@ class SnippetsExplorerProvider {
 	}
 
 	/**
+	 * Delete file
+	 * @param {String} filePath
+	 * @return {Boolean}
+	 */
+	deleteFile(filePath){
+
+		if( this.pathExists(filePath) ){
+
+			try {
+				fs.unlinkSync(filePath);
+				this.refresh();
+			} catch (err) {
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Delete folder
+	 * @param {String} folderPath
+	 * @return {Boolean}
+	 */
+	deleteFolder(folderPath){
+
+		var self = this;
+
+		if( self.pathExists(folderPath) ){
+
+			try {
+
+				fs.readdirSync(folderPath).forEach(function(entry) {
+					var entryPath = path.join(folderPath, entry);
+					if( fs.lstatSync(entryPath).isDirectory() ){
+						self.deleteFolder(entryPath);
+					} else {
+						fs.unlinkSync(entryPath);
+					}
+				});
+
+				fs.rmdirSync(folderPath);
+				self.refresh();
+
+			} catch (err) {
+				console.error(err);
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Check if path exists
 	 * @param {string} thePath
 	 * @return {boolean}
@@ -156,36 +241,53 @@ module.exports = class SnippetsExplorer{
 	 */
 	constructor(context){
 
-		const snippetsPath = vscode.workspace.getConfiguration().get('snippetsbox.location');
-		const provider = new SnippetsExplorerProvider(snippetsPath);
+		const provider = new SnippetsExplorerProvider();
 
-		vscode.window.registerTreeDataProvider('snippetsExplorer', provider);
+		vscode.window.registerTreeDataProvider(
+			'snippetsExplorer', provider
+			);
 
-		vscode.commands.registerCommand('snippetsExplorer.refreshExplorer', function(){
-			//vscode.window.showInformationMessage(`Successfully called refresh snippets.`);
+		// SNIPPETS API
+		vscode.commands.registerCommand(
+			'snippetsExplorer.refreshExplorer', function(){
 			provider.refresh();
 		});
 
-		vscode.commands.registerCommand('snippetsExplorer.addFile', function(node){
+		vscode.commands.registerCommand(
+			'snippetsExplorer.addFile', function(node){
 			//vscode.window.showInformationMessage(`Successfully called add snippet entry.`);
 		});
 
-		vscode.commands.registerCommand('snippetsExplorer.addFolder', function(node){
+		vscode.commands.registerCommand(
+			'snippetsExplorer.addFolder', function(node){
 			//.window.showInformationMessage(`Successfully aff edit snippet entry on ${node.label}.`);
 		});
 
-		vscode.commands.registerCommand('snippetsExplorer.openFile', function(resource){
-			//vscode.window.showInformationMessage(`Successfully called open snippet entry.`);
+		vscode.commands.registerCommand(
+			'snippetsExplorer.openFile', function(resource){
 			vscode.window.showTextDocument(resource);
 		});
 
-		vscode.commands.registerCommand('snippetsExplorer.deleteFile', function(node){
-			vscode.window.showInformationMessage(`Successfully called delete snippet file on ${node.label}.`);
+		vscode.commands.registerCommand(
+			'snippetsExplorer.deleteFile', function(node){
+			provider.deleteFile(node.uri.path);
 		});
 
-		vscode.commands.registerCommand('snippetsExplorer.deleteFolder', function(node){
-			vscode.window.showInformationMessage(`Successfully called delete snippet folder on ${node.label}.`);
+		vscode.commands.registerCommand(
+			'snippetsExplorer.deleteFolder', function(node){
+			provider.deleteFolder(node.uri.path);
 		});
+
+		// CONFIGURATION
+		context.subscriptions.push(
+			vscode.workspace.onDidChangeConfiguration(function(e){
+
+			if( e.affectsConfiguration('snippetsbox.location') ){
+				provider.refresh();
+			}
+
+			})
+		);
 
 	}
 

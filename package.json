@@ -2,10 +2,9 @@
 	"name": "snippetsbox",
 	"displayName": "Snippets Box",
 	"description": "Manage your custom code snippets and notes on VSCode with no pain.",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "mateussouzaweb",
 	"repository": "https://github.com/mateus007/vscode-snippetsbox",
-	"enableProposedApi": true,
 	"engines": {
 		"vscode": "^1.36.0"
 	},
