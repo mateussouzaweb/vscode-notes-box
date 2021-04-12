@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to the "Snippets Box" extension for VSCode will be documented in this file.
+All notable changes to the "Notes Box" extension for VSCode will be documented in this file.
 
 ## [Unreleased]
 
@@ -12,3 +12,9 @@ All notable changes to the "Snippets Box" extension for VSCode will be documente
 
 - Added live reload folder snippets folder path
 - Delete support to files and folders
+
+## [0.0.3]
+
+- Rename to Notes Box
+- Scripts converted to TypeScript
+- Bug fixes

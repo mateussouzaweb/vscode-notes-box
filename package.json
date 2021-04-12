@@ -1,125 +1,139 @@
 {
-	"name": "snippetsbox",
-	"displayName": "Snippets Box",
-	"description": "Manage your custom code snippets and notes on VSCode with no pain.",
-	"version": "0.0.2",
+	"name": "notes-box",
+	"displayName": "Notes Box",
+	"description": "Manage your custom code snippets and notes on VS Code with no pain.",
+	"version": "0.0.3",
 	"publisher": "mateussouzaweb",
-	"repository": "https://github.com/mateus007/vscode-snippetsbox",
+	"license": "SEE LICENSE IN LICENSE.md",
+	"homepage": "https://github.com/mateussouzaweb/vscode-notes-box/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mateussouzaweb/vscode-notes-box"
+	},
+	"bugs": {
+		"url": "https://github.com/mateussouzaweb/vscode-notes-box/issues",
+		"email": "mateussouzaweb@gmail.com"
+	},
+	"icon": "./media/logo.png",
+	"main": "./out/extension.js",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
 	"categories": [
-		"Other"
+		"Other",
+		"Snippets"
 	],
 	"activationEvents": [
-		"onView:snippetsExplorer"
+		"*"
 	],
-	"main": "./extension.js",
+	"extensionKind": [
+		"ui",
+		"workspace"
+	],
 	"contributes": {
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "snippetsbox-explorer",
-					"title": "Snippets Box",
-					"icon": "media/logo.svg"
+					"id": "notes-explorer",
+					"title": "Notes Box",
+					"icon": "./media/logo.svg"
 				}
 			]
 		},
 		"views": {
-			"snippetsbox-explorer": [
+			"notes-explorer": [
 				{
-					"id": "snippetsExplorer",
-					"name": "Explorer"
+					"id": "notesExplorer",
+					"name": "Notes Explorer",
+					"icon": "./media/logo.svg",
+					"contextualTitle": "Notes Explorer"
 				}
 			]
 		},
+		"viewsWelcome": [
+			{
+				"view": "notesExplorer",
+				"contents": "No notes found.\n[Create First Note](command:notesExplorer.addFile)\n[Configure Location](command:notesExplorer.settings)"
+			}
+		],
 		"commands": [
 			{
-				"command": "snippetsExplorer.refreshExplorer",
+				"command": "notesExplorer.refreshExplorer",
 				"title": "Refresh",
-				"icon": {
-					"light": "resources/light/refresh.svg",
-					"dark": "resources/dark/refresh.svg"
-				}
+				"icon": "$(refresh)"
 			},
 			{
-				"command": "snippetsExplorer.addFile",
-				"title": "Add File",
-				"icon": {
-					"light": "resources/light/file.svg",
-					"dark": "resources/dark/file.svg"
-				}
+				"command": "notesExplorer.addFile",
+				"title": "New File",
+				"icon": "$(new-file)"
 			},
 			{
-				"command": "snippetsExplorer.addFolder",
-				"title": "Add Folder",
-				"icon": {
-					"light": "resources/light/folder.svg",
-					"dark": "resources/dark/folder.svg"
-				}
+				"command": "notesExplorer.addFolder",
+				"title": "New Folder",
+				"icon": "$(new-folder)"
 			},
 			{
-				"command": "snippetsExplorer.deleteFile",
+				"command": "notesExplorer.deleteFile",
 				"title": "Delete File"
 			},
 			{
-				"command": "snippetsExplorer.deleteFolder",
+				"command": "notesExplorer.deleteFolder",
 				"title": "Delete Folder"
 			}
 		],
 		"menus": {
 			"view/title": [
 				{
-					"command": "snippetsExplorer.refreshExplorer",
-					"when": "view == snippetsExplorer",
+					"command": "notesExplorer.refreshExplorer",
+					"when": "view == notesExplorer",
 					"group": "navigation"
 				},
 				{
-					"command": "snippetsExplorer.addFile",
-					"when": "view == snippetsExplorer",
+					"command": "notesExplorer.addFile",
+					"when": "view == notesExplorer",
 					"group": "navigation"
 				},
 				{
-					"command": "snippetsExplorer.addFolder",
-					"when": "view == snippetsExplorer",
+					"command": "notesExplorer.addFolder",
+					"when": "view == notesExplorer",
 					"group": "navigation"
 				}
 			],
 			"view/item/context": [
 				{
-					"command": "snippetsExplorer.deleteFile",
-					"when": "view == snippetsExplorer && viewItem == file"
+					"command": "notesExplorer.deleteFile",
+					"when": "view == notesExplorer && viewItem == file"
 				},
 				{
-					"command": "snippetsExplorer.deleteFolder",
-					"when": "view == snippetsExplorer && viewItem == folder"
+					"command": "notesExplorer.deleteFolder",
+					"when": "view == notesExplorer && viewItem == folder"
 				}
 			]
 		},
 		"configuration": [
 			{
-				"title": "Snippets Box",
+				"title": "Notes Box",
 				"properties": {
-					"snippetsbox.location": {
-						"type": "string",
-						"default": ""
+					"notesbox.location": {
+						"markdownDescription": "Set the path of your notes or snippets folder location. Ex: ``~/Notes/``",
+						"type": "string"
 					}
 				}
 			}
 		]
 	},
 	"scripts": {
-		"test": "node ./test/runTest.js"
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"lint": "eslint . --ext .ts,.tsx"
 	},
 	"devDependencies": {
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
 		"@types/vscode": "^1.36.0",
-		"eslint": "^5.13.0",
-		"glob": "^7.1.4",
-		"mocha": "^6.1.4",
-		"typescript": "^3.3.1",
-		"vscode-test": "^1.0.0-next.0"
+		"@typescript-eslint/eslint-plugin": "^4.16.0",
+		"@typescript-eslint/parser": "^4.16.0",
+		"eslint": "^7.21.0",
+		"typescript": "^4.2.2"
 	}
 }
