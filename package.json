@@ -14,7 +14,7 @@
 		"url": "https://github.com/mateussouzaweb/vscode-notes-box/issues",
 		"email": "mateussouzaweb@gmail.com"
 	},
-	"icon": "./media/logo.png",
+	"icon": "media/logo.png",
 	"main": "./out/extension.js",
 	"engines": {
 		"vscode": "^1.36.0"
@@ -36,7 +36,7 @@
 				{
 					"id": "notes-explorer",
 					"title": "Notes Box",
-					"icon": "./media/logo.svg"
+					"icon": "media/logo.svg"
 				}
 			]
 		},
@@ -45,7 +45,7 @@
 				{
 					"id": "notesExplorer",
 					"name": "Notes Explorer",
-					"icon": "./media/logo.svg",
+					"icon": "media/logo.svg",
 					"contextualTitle": "Notes Explorer"
 				}
 			]
