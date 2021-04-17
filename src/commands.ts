@@ -42,6 +42,13 @@ export class NotesExplorerCommands {
         const root = ( path ) ? path : self.getRoot();
         const finalPath = join(root, value);
 
+        if( !existsSync(root) ){
+            mkdirSync(root, {
+                mode: 0o777,
+                recursive: true
+            });
+        }
+
         if( !existsSync(finalPath) ){
             writeFileSync(finalPath, new Uint8Array());
             return true;
