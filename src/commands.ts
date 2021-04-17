@@ -1,7 +1,7 @@
 'use strict';
 
 import { readdirSync } from "fs";
-import { join } from "path";
+import { basename, join } from "path";
 import { mkdirSync, writeFileSync, unlinkSync, lstatSync, rmdirSync, existsSync } from "fs";
 import { TextDocument, TextEditor, window, workspace } from "vscode";
 
@@ -84,7 +84,18 @@ export class NotesExplorerCommands {
      * Delete file
      * @param path
      */
-     deleteFile(path: string): boolean {
+    async deleteFile(path: string): Promise<boolean> {
+
+        const file = basename(path);
+        const confirm = await window.showInformationMessage(
+            `Are you sure you want to delete "${file}"?`,
+            { modal: true },
+            "Delete file"
+        );
+
+        if( !confirm ){
+            return false;
+        }
 
         if( existsSync(path) ){
 
@@ -104,9 +115,19 @@ export class NotesExplorerCommands {
      * Delete folder
      * @param path
      */
-    deleteFolder(path: string): boolean {
+    async deleteFolder(path: string): Promise<boolean> {
 
         const self = this;
+        const folder = basename(path);
+        const confirm = await window.showInformationMessage(
+            `Are you sure you want to delete the folder "${folder}"?`,
+            { modal: true },
+            "Delete folder"
+        );
+
+        if( !confirm ){
+            return false;
+        }
 
         if( existsSync(path) ){
 
