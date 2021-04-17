@@ -1,6 +1,7 @@
 'use strict';
 
 import { ExtensionContext, window, workspace, commands } from 'vscode';
+import { NotesExplorerCommands } from './commands';
 import { NotesExplorerProvider } from './explorer';
 
 /**
@@ -10,6 +11,7 @@ import { NotesExplorerProvider } from './explorer';
 export function activate(context: ExtensionContext): void {
 
     const provider = new NotesExplorerProvider();
+    const cmd = new NotesExplorerCommands();
 
     window.registerTreeDataProvider(
         'notesExplorer', provider
@@ -22,30 +24,51 @@ export function activate(context: ExtensionContext): void {
     });
 
     commands.registerCommand(
-        'notesExplorer.addFile', function(node){
-        window.showInformationMessage(`Successfully called add file entry ${node}.`);
-    });
-
-    commands.registerCommand(
-        'notesExplorer.addFolder', function(node){
-        window.showInformationMessage(`Successfully called add folder on ${node.label}.`);
-    });
-
-    commands.registerCommand(
         'notesExplorer.openFile', function(resource){
-        window.showTextDocument(resource);
+        cmd.openFile(resource)
     });
 
     commands.registerCommand(
-        'notesExplorer.deleteFile', function(node){
-        provider.deleteFile(node.uri.path);
+        'notesExplorer.addFile', async function(node){
+
+        const path = (node) ? node.uri.path : "";
+        if( await cmd.addFile(path) ){
+            provider.refresh();
+        }
+
     });
 
     commands.registerCommand(
-        'notesExplorer.deleteFolder', function(node){
-        provider.deleteFolder(node.uri.path);
+        'notesExplorer.addFolder', async function(node){
+
+        const path = (node) ? node.uri.path : "";
+        if( await cmd.addFolder(path) ){
+            provider.refresh();
+        }
+
     });
 
+    commands.registerCommand(
+        'notesExplorer.deleteFile', async function(node){
+
+        const path = (node) ? node.uri.path : "";
+        if( await cmd.deleteFile(path) ){
+            provider.refresh();
+        }
+
+    });
+
+    commands.registerCommand(
+        'notesExplorer.deleteFolder', async function(node){
+
+        const path = (node) ? node.uri.path : "";
+        if( await cmd.deleteFolder(path) ){
+            provider.refresh();
+        }
+
+    });
+
+    // CONFIGURATION
     commands.registerCommand(
         'notesExplorer.settings', function(){
         commands.executeCommand(
@@ -53,7 +76,6 @@ export function activate(context: ExtensionContext): void {
         );
     });
 
-    // CONFIGURATION
     context.subscriptions.push(
         workspace.onDidChangeConfiguration(function(e){
 

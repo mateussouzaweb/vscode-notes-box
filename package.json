@@ -34,19 +34,19 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "notes-explorer",
+					"id": "notesBox",
 					"title": "Notes Box",
 					"icon": "media/logo.svg"
 				}
 			]
 		},
 		"views": {
-			"notes-explorer": [
+			"notesBox": [
 				{
 					"id": "notesExplorer",
-					"name": "Notes Explorer",
+					"name": "Explorer",
 					"icon": "media/logo.svg",
-					"contextualTitle": "Notes Explorer"
+					"contextualTitle": "Notes Box"
 				}
 			]
 		},
@@ -59,26 +59,33 @@
 		"commands": [
 			{
 				"command": "notesExplorer.refreshExplorer",
+				"category": "Notes Box",
 				"title": "Refresh",
 				"icon": "$(refresh)"
 			},
 			{
 				"command": "notesExplorer.addFile",
+				"category": "Notes Box",
 				"title": "New File",
 				"icon": "$(new-file)"
 			},
 			{
 				"command": "notesExplorer.addFolder",
+				"category": "Notes Box",
 				"title": "New Folder",
 				"icon": "$(new-folder)"
 			},
 			{
 				"command": "notesExplorer.deleteFile",
-				"title": "Delete File"
+				"category": "Notes Box",
+				"title": "Delete File",
+				"icon": "$(trash)"
 			},
 			{
 				"command": "notesExplorer.deleteFolder",
-				"title": "Delete Folder"
+				"category": "Notes Box",
+				"title": "Delete Folder",
+				"icon": "$(trash)"
 			}
 		],
 		"menus": {
@@ -102,10 +109,22 @@
 			"view/item/context": [
 				{
 					"command": "notesExplorer.deleteFile",
+					"group": "navigation@2",
 					"when": "view == notesExplorer && viewItem == file"
 				},
 				{
+					"command": "notesExplorer.addFile",
+					"group": "navigation",
+					"when": "view == notesExplorer && viewItem == folder"
+				},
+				{
+					"command": "notesExplorer.addFolder",
+					"group": "navigation",
+					"when": "view == notesExplorer && viewItem == folder"
+				},
+				{
 					"command": "notesExplorer.deleteFolder",
+					"group": "navigation@2",
 					"when": "view == notesExplorer && viewItem == folder"
 				}
 			]

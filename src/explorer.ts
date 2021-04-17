@@ -1,7 +1,7 @@
 'use strict';
 
-import { Event, EventEmitter, window, workspace, TreeItem, FileType, TreeItemCollapsibleState, Uri, TreeDataProvider } from 'vscode';
-import { readdirSync, statSync, unlinkSync, lstatSync, rmdirSync, accessSync } from 'fs';
+import { Event, EventEmitter, workspace, TreeItem, FileType, TreeItemCollapsibleState, Uri, TreeDataProvider } from 'vscode';
+import { readdirSync, statSync, existsSync } from 'fs';
 import { join } from 'path';
 
 export class NotesExplorerProvider implements TreeDataProvider<any> {
@@ -105,20 +105,20 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
      */
     readDirectory(folder: string): Array<any>{
 
-        if( !this.pathExists(folder) ){
+        if( !existsSync(folder) ){
             return [];
         }
 
         var children = [];
         var exclude = [".git", ".svn" ,".hg", ".DS_Store"];
 
-        readdirSync(folder, 'utf-8').forEach(function(filename){
+        readdirSync(folder, 'utf-8').forEach(function(filename: string | Buffer){
 
-            if( exclude.includes(filename) ){
+            if( exclude.includes(filename.toString()) ){
                 return;
             }
 
-            var stat = statSync(join(folder, filename));
+            var stat = statSync(join(folder, filename.toString()));
             var type = stat.isDirectory() ? FileType.Directory : FileType.File;
 
             children.push([filename, type]);
@@ -141,77 +141,6 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
                 type: item[1]
             };
         });
-    }
-
-    /**
-     * Delete file
-     * @param {String} filePath
-     */
-    deleteFile(filePath: string): boolean{
-
-        if( this.pathExists(filePath) ){
-
-            try {
-                unlinkSync(filePath);
-                this.refresh();
-            } catch (err) {
-                return false;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Delete folder
-     * @param {String} folderPath
-     */
-    deleteFolder(folderPath: string): boolean{
-
-        var self = this;
-
-        if( self.pathExists(folderPath) ){
-
-            try {
-
-                readdirSync(folderPath).forEach(function(entry) {
-                    var entryPath = join(folderPath, entry);
-                    if( lstatSync(entryPath).isDirectory() ){
-                        self.deleteFolder(entryPath);
-                    } else {
-                        unlinkSync(entryPath);
-                    }
-                });
-
-                rmdirSync(folderPath);
-                self.refresh();
-
-            } catch (err) {
-                console.error(err);
-                return false;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if path exists
-     * @param {string} thePath
-     */
-    pathExists(thePath: string): boolean{
-
-        try {
-            accessSync(thePath);
-        } catch (err) {
-            return false;
-        }
-
-        return true;
     }
 
 }
