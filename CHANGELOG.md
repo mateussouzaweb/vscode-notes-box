@@ -22,3 +22,8 @@ All notable changes to the "Notes Box" extension for VSCode will be documented i
 ## [0.0.4]
 
 - Allow execution on remote workspaces
+
+## [0.0.5]
+
+- Commands rewritten with support for add file/folder and delete file/folder
+- Confirmation before delete file/folder
