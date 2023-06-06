@@ -27,3 +27,11 @@ All notable changes to the "Notes Box" extension for VSCode will be documented i
 
 - Commands rewritten with support for add file/folder and delete file/folder
 - Confirmation before delete file/folder
+
+## [0.0.6]
+
+- Revised icons
+- Path normalization process for base location
+- Activation event switched to onStartupFinished
+- Code review
+- Packages updated to the latest version
