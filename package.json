@@ -24,7 +24,7 @@
 		"Snippets"
 	],
 	"activationEvents": [
-		"*"
+		"onStartupFinished"
 	],
 	"extensionKind": [
 		"workspace",
