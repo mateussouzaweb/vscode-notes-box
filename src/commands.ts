@@ -1,8 +1,7 @@
 'use strict';
 
-import { readdirSync } from "fs";
-import { basename, join } from "path";
-import { mkdirSync, writeFileSync, unlinkSync, lstatSync, rmdirSync, existsSync } from "fs";
+import { basename, join, resolve } from "path";
+import { mkdirSync, writeFileSync, unlinkSync, lstatSync, rmdirSync, existsSync, readdirSync } from "fs";
 import { TextDocument, TextEditor, window, workspace } from "vscode";
 
 export class NotesExplorerCommands {
@@ -12,7 +11,9 @@ export class NotesExplorerCommands {
      * @returns
      */
     getRoot(): string {
-        return workspace.getConfiguration().get('notesbox.location') as string;
+        const location = workspace.getConfiguration().get('notesbox.location') as string;
+        const normalized = resolve(location);
+        return normalized;
     }
 
     /**

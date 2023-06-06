@@ -1,8 +1,8 @@
 'use strict';
 
-import { Event, EventEmitter, workspace, TreeItem, FileType, TreeItemCollapsibleState, Uri, TreeDataProvider } from 'vscode';
 import { readdirSync, statSync, existsSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
+import { Event, EventEmitter, workspace, TreeItem, FileType, TreeItemCollapsibleState, Uri, TreeDataProvider } from 'vscode';
 
 export class NotesExplorerProvider implements TreeDataProvider<any> {
 
@@ -23,11 +23,10 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
      */
     setWorkspaceRoot(){
 
-        const workspaceRoot = workspace
-            .getConfiguration()
-            .get('notesbox.location') as string;
-
-        this.workspaceRoot = workspaceRoot;
+        const location = workspace.getConfiguration().get('notesbox.location') as string;
+        const normalized = resolve(location);
+        
+        this.workspaceRoot = normalized;
 
     }
 
