@@ -25,7 +25,7 @@ export function activate(context: ExtensionContext): void {
 
     commands.registerCommand(
         'notesExplorer.openFile', function(resource){
-        cmd.openFile(resource)
+        cmd.openFile(resource);
     });
 
     commands.registerCommand(
@@ -92,7 +92,7 @@ export function activate(context: ExtensionContext): void {
     );
 
     // STARTUP
-    var workspaceRoot = workspace.getConfiguration()
+    const workspaceRoot = workspace.getConfiguration()
         .get('notesbox.location');
 
     if( !workspaceRoot ){
@@ -112,6 +112,6 @@ export function activate(context: ExtensionContext): void {
 /**
  * Deactivate method
  */
-export function deactivate(): void{
-
+export function deactivate(): void {
+    return;
 }

@@ -15,7 +15,7 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
      * @param context
      */
     constructor() {
-        this.setWorkspaceRoot()
+        this.setWorkspaceRoot();
     }
 
     /**
@@ -44,7 +44,7 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
      */
     getTreeItem(element: any): TreeItem{
 
-        var treeItem = new TreeItem(
+        const treeItem = new TreeItem(
             element.uri,
             ( element.type === FileType.Directory )
                 ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.None
@@ -81,8 +81,7 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
             return Promise.resolve([]);
         }
 
-        var folder = join(this.workspaceRoot);
-
+        let folder = join(this.workspaceRoot);
         if( element ){
             folder = join(this.workspaceRoot, element.name);
         }
@@ -109,8 +108,8 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
             return [];
         }
 
-        var children = [];
-        var exclude = [".git", ".svn" ,".hg", ".DS_Store"];
+        const children = [];
+        const exclude = [".git", ".svn", ".hg", ".DS_Store"];
 
         readdirSync(folder, 'utf-8').forEach(function(filename: string | Buffer){
 
@@ -118,8 +117,8 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
                 return;
             }
 
-            var stat = statSync(join(folder, filename.toString()));
-            var type = stat.isDirectory() ? FileType.Directory : FileType.File;
+            const stat = statSync(join(folder, filename.toString()));
+            const type = stat.isDirectory() ? FileType.Directory : FileType.File;
 
             children.push([filename, type]);
 

@@ -29,17 +29,16 @@ export class NotesExplorerCommands {
      */
     async addFile(path: string): Promise<boolean> {
 
-        const self = this;
         const value = await window.showInputBox({
             placeHolder: "File Name.md",
             value: "File.md"
         });
 
         if( !value ){
-            return false
+            return false;
         }
 
-        const root = ( path ) ? path : self.getRoot();
+        const root = ( path ) ? path : this.getRoot();
         const finalPath = join(root, value);
 
         if( !existsSync(root) ){
@@ -63,7 +62,6 @@ export class NotesExplorerCommands {
      */
     async addFolder(path: string): Promise<boolean> {
 
-        const self = this;
         const value = await window.showInputBox({
             placeHolder: "Folder name",
             value: "Folder"
@@ -73,7 +71,7 @@ export class NotesExplorerCommands {
             return false;
         }
 
-        const root = ( path ) ? path : self.getRoot();
+        const root = ( path ) ? path : this.getRoot();
         const finalPath = join(root, value);
 
         if( !existsSync(finalPath) ){
@@ -124,7 +122,6 @@ export class NotesExplorerCommands {
      */
     async deleteFolder(path: string): Promise<boolean> {
 
-        const self = this;
         const folder = basename(path);
         const confirm = await window.showInformationMessage(
             `Are you sure you want to delete the folder "${folder}"?`,
@@ -136,14 +133,15 @@ export class NotesExplorerCommands {
             return false;
         }
 
+        const deleteFolder = this.deleteFolder;
         if( existsSync(path) ){
 
             try {
 
                 readdirSync(path).forEach(function(entry) {
-                    var entryPath = join(path, entry);
+                    const entryPath = join(path, entry);
                     if( lstatSync(entryPath).isDirectory() ){
-                        self.deleteFolder(entryPath);
+                        deleteFolder(entryPath);
                     } else {
                         unlinkSync(entryPath);
                     }
