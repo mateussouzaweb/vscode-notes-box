@@ -36,7 +36,7 @@
 				{
 					"id": "notesBox",
 					"title": "Notes Box",
-					"icon": "media/logo.svg"
+					"icon": "media/icon.svg"
 				}
 			]
 		},
@@ -45,7 +45,7 @@
 				{
 					"id": "notesExplorer",
 					"name": "Explorer",
-					"icon": "media/logo.svg",
+					"icon": "media/icon.svg",
 					"contextualTitle": "Notes Box"
 				}
 			]
