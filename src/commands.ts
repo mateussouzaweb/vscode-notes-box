@@ -1,8 +1,9 @@
 'use strict';
 
-import { basename, join, resolve } from "path";
-import { mkdirSync, writeFileSync, unlinkSync, lstatSync, rmdirSync, existsSync, readdirSync } from "fs";
-import { TextDocument, TextEditor, window, workspace } from "vscode";
+import { basename, dirname, join } from "path";
+import { mkdirSync, writeFileSync, unlinkSync, lstatSync, rmdirSync, existsSync, readdirSync, renameSync } from "fs";
+import { TextDocument, TextEditor, window } from "vscode";
+import { getRootPath } from "./lib";
 
 export class NotesExplorerCommands {
 
@@ -11,9 +12,7 @@ export class NotesExplorerCommands {
      * @returns
      */
     getRoot(): string {
-        const location = workspace.getConfiguration().get('notesbox.location') as string;
-        const normalized = resolve(location);
-        return normalized;
+        return getRootPath();
     }
 
     /**
@@ -35,21 +34,21 @@ export class NotesExplorerCommands {
             value: "File.md"
         });
 
-        if( !value ){
+        if (!value) {
             return false;
         }
 
-        const root = ( path ) ? path : this.getRoot();
+        const root = (path) ? path : this.getRoot();
         const finalPath = join(root, value);
 
-        if( !existsSync(root) ){
+        if (!existsSync(root)) {
             mkdirSync(root, {
                 mode: 0o777,
                 recursive: true
             });
         }
 
-        if( !existsSync(finalPath) ){
+        if (!existsSync(finalPath)) {
             writeFileSync(finalPath, new Uint8Array());
             return true;
         }
@@ -68,18 +67,70 @@ export class NotesExplorerCommands {
             value: "Folder"
         });
 
-        if( !value ){
+        if (!value) {
             return false;
         }
 
-        const root = ( path ) ? path : this.getRoot();
+        const root = (path) ? path : this.getRoot();
         const finalPath = join(root, value);
 
-        if( !existsSync(finalPath) ){
+        if (!existsSync(finalPath)) {
             mkdirSync(finalPath, {
                 mode: 0o777,
                 recursive: true
             });
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Rename file
+     * @param path
+     */
+    async renameFile(path: string): Promise<boolean> {
+
+        const file = basename(path);
+        const directory = dirname(path);
+        const value = await window.showInputBox({
+            placeHolder: "File Name.md",
+            value: file
+        });
+
+        if (!value) {
+            return false;
+        }
+
+        const newPath = join(directory, value);
+        if (!existsSync(newPath)) {
+            renameSync(path, newPath);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Rename folder
+     * @param path
+     */
+    async renameFolder(path: string): Promise<boolean> {
+
+        const folder = basename(path);
+        const directory = dirname(path);
+        const value = await window.showInputBox({
+            placeHolder: "Folder name",
+            value: folder
+        });
+
+        if (!value) {
+            return false;
+        }
+
+        const newPath = join(directory, value);
+        if (!existsSync(newPath)) {
+            renameSync(path, newPath);
             return true;
         }
 
@@ -99,19 +150,17 @@ export class NotesExplorerCommands {
             "Delete file"
         );
 
-        if( !confirm ){
+        if (!confirm) {
             return false;
         }
 
-        if( existsSync(path) ){
-
+        if (existsSync(path)) {
             try {
                 unlinkSync(path);
+                return true;
             } catch (err) {
                 return false;
             }
-
-            return true;
         }
 
         return false;
@@ -130,18 +179,18 @@ export class NotesExplorerCommands {
             "Delete folder"
         );
 
-        if( !confirm ){
+        if (!confirm) {
             return false;
         }
 
         const deleteFolder = this.deleteFolder;
-        if( existsSync(path) ){
+        if (existsSync(path)) {
 
             try {
 
-                readdirSync(path).forEach(function(entry) {
+                readdirSync(path).forEach(function (entry) {
                     const entryPath = join(path, entry);
-                    if( lstatSync(entryPath).isDirectory() ){
+                    if (lstatSync(entryPath).isDirectory()) {
                         deleteFolder(entryPath);
                     } else {
                         unlinkSync(entryPath);
@@ -149,12 +198,12 @@ export class NotesExplorerCommands {
                 });
 
                 rmdirSync(path);
+                return true;
 
             } catch (err) {
                 return false;
             }
 
-            return true;
         }
 
         return false;

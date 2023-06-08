@@ -76,6 +76,18 @@
 				"icon": "$(new-folder)"
 			},
 			{
+				"command": "notesExplorer.renameFile",
+				"category": "Notes Box",
+				"title": "Rename File",
+				"icon": "$(file)"
+			},
+			{
+				"command": "notesExplorer.renameFolder",
+				"category": "Notes Box",
+				"title": "Rename Folder",
+				"icon": "$(folder)"
+			},
+			{
 				"command": "notesExplorer.deleteFile",
 				"category": "Notes Box",
 				"title": "Delete File",
@@ -113,12 +125,22 @@
 					"when": "view == notesExplorer && viewItem == file"
 				},
 				{
+					"command": "notesExplorer.renameFile",
+					"group": "navigation@2",
+					"when": "view == notesExplorer && viewItem == file"
+				},
+				{
 					"command": "notesExplorer.addFile",
 					"group": "navigation",
 					"when": "view == notesExplorer && viewItem == folder"
 				},
 				{
 					"command": "notesExplorer.addFolder",
+					"group": "navigation",
+					"when": "view == notesExplorer && viewItem == folder"
+				},
+				{
+					"command": "notesExplorer.renameFolder",
 					"group": "navigation",
 					"when": "view == notesExplorer && viewItem == folder"
 				},

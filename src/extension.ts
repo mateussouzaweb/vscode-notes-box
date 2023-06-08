@@ -3,6 +3,7 @@
 import { ExtensionContext, window, workspace, commands } from 'vscode';
 import { NotesExplorerCommands } from './commands';
 import { NotesExplorerProvider } from './explorer';
+import { getRootPath } from './lib';
 
 /**
  * Activate method
@@ -19,92 +20,91 @@ export function activate(context: ExtensionContext): void {
 
     // SNIPPETS API
     commands.registerCommand(
-        'notesExplorer.refreshExplorer', function(){
-        provider.refresh();
-    });
-
-    commands.registerCommand(
-        'notesExplorer.openFile', function(resource){
-        cmd.openFile(resource);
-    });
-
-    commands.registerCommand(
-        'notesExplorer.addFile', async function(node){
-
-        const path = (node) ? node.uri.path : "";
-        if( await cmd.addFile(path) ){
+        'notesExplorer.refreshExplorer', function () {
             provider.refresh();
-        }
-
-    });
+        });
 
     commands.registerCommand(
-        'notesExplorer.addFolder', async function(node){
-
-        const path = (node) ? node.uri.path : "";
-        if( await cmd.addFolder(path) ){
-            provider.refresh();
-        }
-
-    });
+        'notesExplorer.openFile', function (resource) {
+            cmd.openFile(resource);
+        });
 
     commands.registerCommand(
-        'notesExplorer.deleteFile', async function(node){
-
-        const path = (node) ? node.uri.path : "";
-        if( await cmd.deleteFile(path) ){
-            provider.refresh();
-        }
-
-    });
+        'notesExplorer.addFile', async function (node) {
+            const path = (node) ? node.uri.path : "";
+            if (await cmd.addFile(path)) {
+                provider.refresh();
+            }
+        });
 
     commands.registerCommand(
-        'notesExplorer.deleteFolder', async function(node){
+        'notesExplorer.addFolder', async function (node) {
+            const path = (node) ? node.uri.path : "";
+            if (await cmd.addFolder(path)) {
+                provider.refresh();
+            }
+        });
 
-        const path = (node) ? node.uri.path : "";
-        if( await cmd.deleteFolder(path) ){
-            provider.refresh();
-        }
+    commands.registerCommand(
+        'notesExplorer.renameFile', async function (node) {
+            const path = (node) ? node.uri.path : "";
+            if (await cmd.renameFile(path)) {
+                provider.refresh();
+            }
+        });
 
-    });
+    commands.registerCommand(
+        'notesExplorer.renameFolder', async function (node) {
+            const path = (node) ? node.uri.path : "";
+            if (await cmd.renameFolder(path)) {
+                provider.refresh();
+            }
+        });
+
+    commands.registerCommand(
+        'notesExplorer.deleteFile', async function (node) {
+            const path = (node) ? node.uri.path : "";
+            if (await cmd.deleteFile(path)) {
+                provider.refresh();
+            }
+        });
+
+    commands.registerCommand(
+        'notesExplorer.deleteFolder', async function (node) {
+            const path = (node) ? node.uri.path : "";
+            if (await cmd.deleteFolder(path)) {
+                provider.refresh();
+            }
+        });
 
     // CONFIGURATION
     commands.registerCommand(
-        'notesExplorer.settings', function(){
-        commands.executeCommand(
-            'workbench.action.openSettings', 'notesbox.location'
-        );
-    });
+        'notesExplorer.settings', function () {
+            commands.executeCommand(
+                'workbench.action.openSettings', 'notesbox'
+            );
+        });
 
     context.subscriptions.push(
-        workspace.onDidChangeConfiguration(function(e){
-
-            if( e.affectsConfiguration('notesbox.location') ){
-                provider.setWorkspaceRoot();
+        workspace.onDidChangeConfiguration(function (e) {
+            if (e.affectsConfiguration('notesbox')) {
                 provider.refresh();
             }
-
-            if( e.affectsConfiguration('files.exclude') ){
+            if (e.affectsConfiguration('files.exclude')) {
                 provider.refresh();
             }
-
         })
     );
 
     // STARTUP
-    const workspaceRoot = workspace.getConfiguration()
-        .get('notesbox.location');
-
-    if( !workspaceRoot ){
-
+    const workspaceRoot = getRootPath();
+    if (!workspaceRoot) {
         window.showInformationMessage(
             'Notes Box folder location has not been configured yet. Please configure the notes folder path.',
             "Open Settings"
-        )
-        .then(function(){
+        ).then(function () {
             commands.executeCommand('notesExplorer.settings');
         });
-
     }
 
 }
