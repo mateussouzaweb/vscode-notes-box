@@ -1,30 +1,22 @@
 # Notes Box for Visual Studio Code
 
-Manage your custom code snippets and notes on *Visual Studio Code* with no pain. *Notes Box* creates a new tree view just for the content of your custom notes folder.
+Now you can create and maintain notes and snippets with any file format without extra softwares and access they when necessary on the comfort of *Visual Studio Code*.
 
-Now you can create and maintain notes and snippets with any file format without extra softwares and access they when necessary on the commodity of *Visual Studio Code*.
+**Notes Box** is a secure extension that adds to Visual Studio Code a new tree view just for the content of your custom notes folder, giving you the ability to manage your custom code snippets and notes on *Visual Studio Code* with no pain.
 
-It just works!!!
+Simple create a new folder for your notes or snippets and start typing whatever you want with the file format that you need.
 
-If you don't have any, simple create a new notes folder and start typing your notes.
+It just works!!! **Enjoy!**
 
 ## Features
 
-- Work with your custom notes/snippets folder.
+- Works with your custom notes/snippets folder.
+- Can create, rename and delete files and folders.
+- Notes can be organized into sub-folders.
+- Supports any file format.
+- Can be used on local or remote installations.
 - Notes can receive control version and can be synchronized with GIT.
-- You can create snippets of any file format.
-- You can organize notes and snippets in sub-folders.
-- You can use the power of extensibility of VS Code to create even better snippets and notes.
-- You can use the same content at any programs, the way you like.
+- You can use the power of extensibility of Visual Studio Code to create even better snippets and notes by combining features of others extensions (a new syntax highlight or a file preview for example).
+- And if you want to see or use your notes outside of Visual Studio Code, you already have everything ready to it - there is no vendor lock in. Just open the notes folder in another program, the way you like.
 
-## Extension Settings
 
-This extension has following settings. Make sure you configure it first before running the extension:
-
-`notesbox.location`: set the location of your snippets
-
-## Known Issues
-
-No issues yet. Works out of the box.
-
-**Enjoy!**
