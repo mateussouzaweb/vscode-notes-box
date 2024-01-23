@@ -43,10 +43,9 @@
 		"views": {
 			"notesBox": [
 				{
+					"name": "Notes Box",
 					"id": "notesExplorer",
-					"name": "Explorer",
-					"icon": "media/icon.svg",
-					"contextualTitle": "Notes Box"
+					"icon": "media/icon.svg"
 				}
 			]
 		},
