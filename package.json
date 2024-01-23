@@ -112,6 +112,44 @@
 			}
 		],
 		"menus": {
+			"commandPalette": [
+				{
+					"command": "notesExplorer.settings",
+					"when": "true"
+				},
+				{
+					"command": "notesExplorer.refreshExplorer",
+					"when": "true"
+				},
+				{
+					"command": "notesExplorer.openFile",
+					"when": "false"
+				},
+				{
+					"command": "notesExplorer.addFile",
+					"when": "false"
+				},
+				{
+					"command": "notesExplorer.addFolder",
+					"when": "false"
+				},
+				{
+					"command": "notesExplorer.renameFile",
+					"when": "false"
+				},
+				{
+					"command": "notesExplorer.renameFolder",
+					"when": "false"
+				},
+				{
+					"command": "notesExplorer.deleteFile",
+					"when": "false"
+				},
+				{
+					"command": "notesExplorer.deleteFolder",
+					"when": "false"
+				}
+			],
 			"view/title": [
 				{
 					"command": "notesExplorer.settings",
