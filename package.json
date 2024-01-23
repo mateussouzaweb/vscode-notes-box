@@ -57,6 +57,12 @@
 		],
 		"commands": [
 			{
+				"command": "notesExplorer.settings",
+				"category": "Notes Box",
+				"title": "Settings",
+				"icon": "$(settings-gear)"
+			},
+			{
 				"command": "notesExplorer.refreshExplorer",
 				"category": "Notes Box",
 				"title": "Refresh",
@@ -101,6 +107,11 @@
 		],
 		"menus": {
 			"view/title": [
+				{
+					"command": "notesExplorer.settings",
+					"when": "view == notesExplorer",
+					"group": "navigation"
+				},
 				{
 					"command": "notesExplorer.refreshExplorer",
 					"when": "view == notesExplorer",
