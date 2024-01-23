@@ -69,6 +69,12 @@
 				"icon": "$(refresh)"
 			},
 			{
+				"command": "notesExplorer.openFile",
+				"category": "Notes Box",
+				"title": "Open File",
+				"icon": "$(file)"
+			},
+			{
 				"command": "notesExplorer.addFile",
 				"category": "Notes Box",
 				"title": "New File",
@@ -130,12 +136,17 @@
 			],
 			"view/item/context": [
 				{
-					"command": "notesExplorer.deleteFile",
+					"command": "notesExplorer.openFile",
 					"group": "navigation@2",
 					"when": "view == notesExplorer && viewItem == file"
 				},
 				{
 					"command": "notesExplorer.renameFile",
+					"group": "navigation@2",
+					"when": "view == notesExplorer && viewItem == file"
+				},
+				{
+					"command": "notesExplorer.deleteFile",
 					"group": "navigation@2",
 					"when": "view == notesExplorer && viewItem == file"
 				},
