@@ -2,8 +2,6 @@
 
 All notable changes to the "Notes Box" extension for VSCode will be documented in this file.
 
-## [Unreleased]
-
 ## [0.0.1]
 
 - Initial release.
@@ -35,3 +33,16 @@ All notable changes to the "Notes Box" extension for VSCode will be documented i
 - Activation event switched to onStartupFinished
 - Code review
 - Packages updated to the latest version
+
+## [0.0.7]
+
+- Revised dependencies
+- Home path resolve
+- Option to rename files and folders
+
+## [0.0.8]
+
+- Support for recursive folders
+- Easier access to settings in the UI
+- Context menu to open file
+- Revised command palette available items
