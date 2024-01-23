@@ -63,12 +63,13 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
 
         let folder = join(workspaceRoot);
         if (element) {
-            folder = join(workspaceRoot, element.name);
+            folder = join(workspaceRoot, element.relative);
         }
 
-        return Promise.resolve(
-            this.readDirectory(folder)
-        );
+        return Promise.resolve(this.readDirectory(
+            workspaceRoot,
+            folder
+        ));
     }
 
     /**
@@ -79,10 +80,11 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
     // }
 
     /**
-     * Read directory and retrieve child elements
+     * Read directory and retrieve children elements
+     * @param {string} root
      * @param {string} folder
      */
-    readDirectory(folder: string): Array<any> {
+    readDirectory(root: string, folder: string): Array<any> {
 
         if (!existsSync(folder)) {
             return [];
@@ -113,13 +115,19 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
             return a[1] === FileType.Directory ? -1 : 1;
         });
 
-        return children.map(function (item) {
+        const results = children.map(function (item) {
+            const path = join(folder, item[0])
+            const relative = path.replace(root, '')
+
             return {
-                uri: Uri.file(join(folder, item[0])),
+                uri: Uri.file(path),
+                relative: relative,
                 name: item[0],
                 type: item[1]
             };
         });
+
+        return results;
     }
 
 }
