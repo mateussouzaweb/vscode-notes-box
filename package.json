@@ -175,7 +175,7 @@
 			"view/item/context": [
 				{
 					"command": "notesExplorer.openFile",
-					"group": "navigation@2",
+					"group": "navigation@1",
 					"when": "view == notesExplorer && viewItem == file"
 				},
 				{
@@ -185,27 +185,27 @@
 				},
 				{
 					"command": "notesExplorer.deleteFile",
-					"group": "navigation@2",
+					"group": "navigation@3",
 					"when": "view == notesExplorer && viewItem == file"
 				},
 				{
 					"command": "notesExplorer.addFile",
-					"group": "navigation",
+					"group": "navigation@1",
 					"when": "view == notesExplorer && viewItem == folder"
 				},
 				{
 					"command": "notesExplorer.addFolder",
-					"group": "navigation",
+					"group": "navigation@1",
 					"when": "view == notesExplorer && viewItem == folder"
 				},
 				{
 					"command": "notesExplorer.renameFolder",
-					"group": "navigation",
+					"group": "navigation@2",
 					"when": "view == notesExplorer && viewItem == folder"
 				},
 				{
 					"command": "notesExplorer.deleteFolder",
-					"group": "navigation@2",
+					"group": "navigation@3",
 					"when": "view == notesExplorer && viewItem == folder"
 				}
 			]
