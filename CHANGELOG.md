@@ -46,3 +46,8 @@ All notable changes to the "Notes Box" extension for VSCode will be documented i
 - Easier access to settings in the UI
 - Context menu to open file
 - Revised command palette available items
+
+## [0.0.9]
+
+- Added support for files exclusion from setting
+- General code optimizations
