@@ -216,7 +216,8 @@
 				"properties": {
 					"notesbox.location": {
 						"markdownDescription": "Set the path of your notes or snippets folder. Ex: ``~/Notes/``",
-						"type": "string"
+						"type": "string",
+						"default": ""
 					},
 					"notesbox.exclude": {
 						"markdownDescription": "Set additional files and folders to exclude from listing in notes explorer. Inherits from `#files.exclude#`.",
