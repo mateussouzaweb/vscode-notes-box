@@ -2,7 +2,7 @@
 	"name": "notes-box",
 	"displayName": "Notes Box",
 	"description": "Manage your custom code snippets and notes on VS Code with no pain.",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"publisher": "mateussouzaweb",
 	"license": "SEE LICENSE IN LICENSE.md",
 	"homepage": "https://github.com/mateussouzaweb/vscode-notes-box/blob/master/README.md",
