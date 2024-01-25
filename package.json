@@ -215,7 +215,7 @@
 				"title": "Notes Box",
 				"properties": {
 					"notesbox.location": {
-						"markdownDescription": "Set the path of your notes or snippets folder location. Ex: ``~/Notes/``",
+						"markdownDescription": "Set the path of your notes or snippets folder. Ex: ``~/Notes/``",
 						"type": "string"
 					},
 					"notesbox.exclude": {
