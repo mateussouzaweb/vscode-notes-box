@@ -6,7 +6,7 @@ import { workspace } from "vscode";
 
 /**
  * Retrieve configured notes root path
- * @returns 
+ * @returns
  */
 export function getRootPath() {
 
@@ -23,13 +23,20 @@ export function getRootPath() {
  * @returns
  */
 export function getExclusionList() {
-    
-    const exclude = [];
-    const filesExclude = workspace.getConfiguration().get('files.exclude') as Record<string, boolean>;
 
+    const exclude = [];
+
+    const filesExclude = workspace.getConfiguration().get('files.exclude') as Record<string, boolean>;
     for (const [key, value] of Object.entries(filesExclude)) {
         if( value ){
             exclude.push(key);
+        }
+    }
+
+    const notesExclude = workspace.getConfiguration().get('notesbox.exclude') as Array<string>;
+    for (const value of notesExclude) {
+        if( value ){
+            exclude.push(value);
         }
     }
 
@@ -40,8 +47,8 @@ export function getExclusionList() {
  * Check if file is in the exclusion list.
  * NOTE: Glob pattern is simulated, and support only basic samples
  * @see https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options
- * @param filename 
- * @returns 
+ * @param filename
+ * @returns
  */
 export function isInExclusionList(filename: string) {
 
