@@ -3,7 +3,7 @@
 import { readdirSync, statSync, existsSync } from 'fs';
 import { join } from 'path';
 import { Event, EventEmitter, TreeItem, FileType, TreeItemCollapsibleState, Uri, TreeDataProvider } from 'vscode';
-import { getRootPath } from './lib';
+import { getRootPath, isInExclusionList } from './lib';
 
 export class NotesExplorerProvider implements TreeDataProvider<any> {
 
@@ -91,43 +91,38 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
         }
 
         const children = [];
-        const exclude = [".git", ".svn", ".hg", ".DS_Store"];
-
         readdirSync(folder, 'utf-8').forEach(function (filename: string | Buffer) {
 
-            if (exclude.includes(filename.toString())) {
+            const file = join(folder, filename.toString());
+            const relative = file.replace(root, '');
+
+            if (isInExclusionList(relative)) {
                 return;
             }
 
-            const stat = statSync(join(folder, filename.toString()));
+            const stat = statSync(file);
             const type = stat.isDirectory() ? FileType.Directory : FileType.File;
+            const item = {
+                uri: Uri.file(file),
+                relative: relative,
+                name: filename,
+                type: type
+            };
 
-            children.push([filename, type]);
+            children.push(item);
 
         });
 
         children.sort(function (a, b) {
 
-            if (a[1] === b[1]) {
-                return a[0].localeCompare(b[0]);
+            if (a.type === b.type) {
+                return a.relative.localeCompare(b.relative);
             }
 
-            return a[1] === FileType.Directory ? -1 : 1;
+            return a.type === FileType.Directory ? -1 : 1;
         });
 
-        const results = children.map(function (item) {
-            const path = join(folder, item[0])
-            const relative = path.replace(root, '')
-
-            return {
-                uri: Uri.file(path),
-                relative: relative,
-                name: item[0],
-                type: item[1]
-            };
-        });
-
-        return results;
+        return children;
     }
 
 }
