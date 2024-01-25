@@ -3,7 +3,7 @@
 import { readdirSync, statSync, existsSync } from 'fs';
 import { join } from 'path';
 import { Event, EventEmitter, TreeItem, FileType, TreeItemCollapsibleState, Uri, TreeDataProvider } from 'vscode';
-import { getRootPath } from './lib';
+import { getRootPath, isInExclusionList } from './lib';
 
 export class NotesExplorerProvider implements TreeDataProvider<any> {
 
@@ -95,9 +95,8 @@ export class NotesExplorerProvider implements TreeDataProvider<any> {
 
             const file = join(folder, filename.toString());
             const relative = file.replace(root, '');
-            const exclude = [".git", ".svn", ".hg", ".DS_Store"];
 
-            if (exclude.includes(filename.toString())) {
+            if (isInExclusionList(relative)) {
                 return;
             }
 
